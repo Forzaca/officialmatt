@@ -20,15 +20,14 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
-  <link rel="stylesheet" href="/css/site.css?v=3">
+  <link rel="stylesheet" href="/css/site.css?v=4">
 
   <script>try{if(!sessionStorage.getItem('mp_pre'))document.documentElement.classList.add('first')}catch(e){}</script>
 </head>
 <body data-page="home" class="has-hero">
   <div class="ambient" aria-hidden="true"></div>
   <div class="grain" aria-hidden="true"></div>
-  <div class="scroll-meter" id="scroll-meter" aria-hidden="true"></div>
-
+  
   <header class="top" id="top">
     <div class="top-row">
       <a class="brand" href="/" aria-label="Matt, home">
@@ -55,47 +54,44 @@
 
     <section class="hero" id="hero">
       <div class="hero-bg" id="hero-bg" aria-hidden="true">
-        <div class="aurora"><i></i><i></i><i></i></div>
-        <picture class="hero-photo">
+        <picture>
           <source media="(max-width: 700px)" srcset="/assets/background-sm.jpg">
           <img src="/assets/background.jpg" alt="" fetchpriority="high" width="1920" height="993">
         </picture>
-        <canvas id="hero-canvas"></canvas>
       </div>
-      <div class="wrap hero-inner">
-        <div class="hero-content" id="hero-content">
-          <span class="eyebrow" data-reveal="fade">Developer &amp; designer</span>
-          <h1 id="hero-title" data-split data-manual>Banners and Discord bots <span class="grad-text">that feel right.</span></h1>
-          <p class="lede" data-reveal style="--delay:520ms">Hey, I'm Matt. I build for Discord communities and small brands, plus the odd side project when something sounds fun.</p>
-          <div class="hero-actions" data-reveal style="--delay:680ms">
-            <a class="btn" href="#latest">See latest work <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a>
-            <a class="btn discord" href="https://discord.com/users/1272978844248178730" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.6 5.6A17 17 0 0 0 15.4 4.3l-.5 1.1a15.7 15.7 0 0 0-5.8 0l-.5-1.1a17 17 0 0 0-4.2 1.3C1.8 9.6 1.1 13.5 1.4 17.3a17 17 0 0 0 5.2 2.6l1.1-1.8c-.6-.2-1.2-.5-1.7-.9l.4-.3a12.2 12.2 0 0 0 11.2 0l.4.3c-.5.4-1.1.7-1.7.9l1.1 1.8a17 17 0 0 0 5.2-2.6c.4-4.4-.7-8.3-3-11.7zM8.7 15c-1 0-1.9-1-1.9-2.1s.8-2.1 1.9-2.1 1.9 1 1.9 2.1-.8 2.1-1.9 2.1zm6.6 0c-1 0-1.9-1-1.9-2.1s.8-2.1 1.9-2.1 1.9 1 1.9 2.1-.8 2.1-1.9 2.1z"/></svg>Message on Discord</a>
-            <button class="btn ghost" type="button" data-copy-username><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2.5"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg><span>Copy username</span></button>
+      <div class="wrap">
+        <div class="hero-inner">
+          <h1 id="hero-title" data-split data-manual>Banners and Discord bots, done right.</h1>
+          <div class="hero-side">
+            <p class="lede" data-reveal style="--delay:420ms">Hey, I'm Matt. I make banners and custom Discord bots for communities and small brands, plus the odd side project.</p>
+            <div class="hero-actions" data-reveal style="--delay:560ms">
+              <a class="btn" href="#latest">See my work</a>
+              <a class="btn ghost" href="#contact">Contact</a>
+            </div>
           </div>
         </div>
+        <div class="stats">
+          <div class="fact card" data-reveal style="--delay:640ms"><b id="fact-work" class="sk">00</b><span class="muted">Projects in the portfolio</span></div>
+          <div class="fact card" data-reveal style="--delay:700ms"><b id="fact-done" class="sk">00</b><span class="muted">Orders completed</span></div>
+          <div class="fact card" data-reveal style="--delay:760ms"><b id="fact-queue" class="sk">00</b><span class="muted">In the queue</span></div>
+          <div class="fact card" data-reveal style="--delay:820ms"><b id="fact-rating" class="sk">0.0</b><span class="muted" id="fact-rating-label">Client reviews</span></div>
+        </div>
       </div>
-      <a class="scroll-cue" href="#latest" aria-label="Scroll to latest work"></a>
     </section>
 
     <section class="section latest" id="latest">
       <div class="wrap">
         <div class="section-head spread">
           <div>
-            <span class="eyebrow" data-reveal>Latest work</span>
-            <h2 class="h2" data-split>Fresh off the desk.</h2>
-            <p class="lede" data-reveal>The newest projects, straight from the portfolio.</p>
+            <span class="eyebrow" data-reveal>Selected work</span>
+            <h2 class="h2" data-split>Latest projects.</h2>
+            <p class="lede" data-reveal>The newest things I've shipped.</p>
           </div>
           <a class="link-arrow" href="/work" data-reveal>View all work <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         </div>
         <div class="work-grid featured" id="featured">
           <div class="work-sk sk"></div><div class="work-sk sk"></div><div class="work-sk sk"></div><div class="work-sk sk"></div><div class="work-sk sk"></div>
         </div>
-      </div>
-    </section>
-
-    <section class="statement" aria-label="How I work">
-      <div class="wrap">
-        <p class="scrub" id="scrub">I keep things simple. Clear design, clean code, and work built around how your community actually runs.</p>
       </div>
     </section>
 
@@ -150,11 +146,6 @@
           <h2 class="h2" data-split>The fastest way to reach me is Discord.</h2>
           <p data-reveal>Tell me what you're after, share anything you like the look of, and give me a rough deadline.</p>
           <p data-reveal>I'll come back with questions or a plan, usually the same day.</p>
-          <div class="facts">
-            <div class="fact card" data-reveal><b id="fact-work" class="sk">00</b><span>Projects shown</span></div>
-            <div class="fact card" data-reveal style="--delay:80ms"><b id="fact-rating" class="sk">0.0</b><span>Avg. rating</span></div>
-            <div class="fact card" data-reveal style="--delay:160ms"><b id="fact-done" class="sk">00</b><span>Orders done</span></div>
-          </div>
           <div class="row" style="margin-top:28px" data-reveal><a class="link-arrow" href="/about">More about me <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
         </div>
         <div class="contact glass" data-lanyard data-reveal="scale">
@@ -191,8 +182,9 @@
       </div>
     </div>
   </footer>
-  <script src="/js/core.js?v=1" defer></script>
-  <script src="/js/work-ui.js?v=1" defer></script>
-  <script src="/js/home.js?v=2" defer></script>
+  <script src="/js/core.js?v=2" defer></script>
+  <script src="/js/work-ui.js?v=2" defer></script>
+  <script src="/js/home.js?v=3" defer></script>
 </body>
 </html>
+
