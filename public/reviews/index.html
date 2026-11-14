@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Reviews — Matt</title>
+  <meta name="description" content="Reviews from people Matt has worked with. Sign in with Discord to leave one.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Matt's Portfolio">
+  <meta property="og:title" content="Reviews — Matt">
+  <meta property="og:description" content="Reviews from people Matt has worked with. Sign in with Discord to leave one.">
+  <meta property="og:image" content="/assets/og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#09090a">
+  
+  <link rel="icon" href="/assets/icon-32.png" type="image/png" sizes="32x32">
+  <link rel="icon" href="/assets/icon-48.png" type="image/png" sizes="48x48">
+  <link rel="apple-touch-icon" href="/assets/icon-180.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="/css/site.css?v=11">
+
+
+</head>
+<body data-page="reviews">
+  <div class="ambient" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="top" id="top">
+    <div class="top-row">
+      <a class="brand" href="/" aria-label="Matt, home">
+        <img src="/assets/logo.png" alt="" width="34" height="34">
+        <span>Matt</span>
+      </a>
+      <button class="menu-btn icon-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="top-nav" aria-label="Menu">
+        <span class="bars"><span></span><span></span></span>
+      </button>
+      <nav class="top-nav" id="top-nav" aria-label="Main">
+        <a class="nav-link" href="/work" data-nav="work">Work</a>
+        <a class="nav-link" href="/about" data-nav="about">About</a>
+        <a class="nav-link" href="/reviews" data-nav="reviews">Reviews</a>
+        <a class="nav-link" href="/queue" data-nav="queue">Queue</a>
+        <div class="top-side">
+          <div class="top-user" id="top-user"><span class="sk" style="display:block;width:92px;height:36px;border-radius:11px"></span></div>
+        </div>
+      </nav>
+    </div>
+  </header>
+  <main id="page" tabindex="-1">
+
+    <section class="page-head">
+      <div class="wrap">
+        <span class="eyebrow" data-reveal>Reviews</span>
+        <h1 data-split>What people say.</h1>
+        <p class="lede" data-reveal>Every review comes from a real Discord account and gets read before it goes up.</p>
+      </div>
+    </section>
+    <section class="section tight" style="padding-top:0">
+      <div class="wrap review-layout">
+        <aside class="review-side">
+          <div class="summary card" id="summary" data-reveal>
+            <div class="row" style="align-items:flex-end;gap:14px"><span class="big sk" id="avg">4.9</span><div style="padding-bottom:6px"><div id="avg-stars" class="sk" style="width:100px;height:18px"></div><div class="small muted sk" id="avg-count" style="margin-top:6px">00 reviews</div></div></div>
+            <div class="bars" id="bars"></div>
+          </div>
+          <div class="card" id="write" style="padding:24px;--delay:80ms" data-reveal>
+            <div style="display:grid;gap:12px"><span class="sk sk-line lg" style="width:50%"></span><span class="sk sk-line" style="width:80%"></span><span class="sk" style="height:46px;border-radius:12px"></span></div>
+          </div>
+        </aside>
+        <div>
+          <div class="masonry" id="list"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap">
+      <div class="foot-grid">
+        <div class="foot-brand">
+          <a class="brand" href="/"><img src="/assets/logo.png" alt="" width="34" height="34"><span>Matt</span></a>
+          <p>Developer &amp; designer. Banners and custom Discord bots, plus the odd side project.</p>
+        </div>
+        <div>
+          <h4>Site</h4>
+          <ul><li><a href="/work">Work</a></li><li><a href="/about">About</a></li><li><a href="/reviews">Reviews</a></li></ul>
+        </div>
+        <div>
+          <h4>Live</h4>
+          <ul><li><a href="/queue">Order queue</a></li><li><a href="/status">Status</a></li><li><a href="https://discord.com/users/1272978844248178730" target="_blank" rel="noopener">Discord</a></li></ul>
+        </div>
+        <div>
+          <h4>Legal</h4>
+          <ul><li><a href="/terms">Terms</a></li><li><a href="/privacy">Privacy</a></li></ul>
+        </div>
+      </div>
+      <div class="foot-base">
+        <span>&copy; <span data-year>2026</span> Matt. Client work shown with permission.</span>
+      </div>
+    </div>
+  </footer>
+  <script src="/js/core.js?v=4" defer></script>
+  <script src="/js/reviews.js?v=4" defer></script>
+</body>
+</html>
