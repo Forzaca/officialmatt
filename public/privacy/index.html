@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Privacy — Matt</title>
+  <meta name="description" content="How Matt's portfolio handles your data.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Matt's Portfolio">
+  <meta property="og:title" content="Privacy — Matt">
+  <meta property="og:description" content="How Matt's portfolio handles your data.">
+  <meta property="og:image" content="/assets/og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#09090a">
+  
+  <link rel="icon" href="/assets/icon-32.png" type="image/png" sizes="32x32">
+  <link rel="icon" href="/assets/icon-48.png" type="image/png" sizes="48x48">
+  <link rel="apple-touch-icon" href="/assets/icon-180.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="/css/site.css?v=25">
+
+
+</head>
+<body data-page="privacy">
+  <div class="ambient quiet" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="top" id="top">
+    <div class="top-row">
+      <a class="brand" href="/" aria-label="Matt, home">
+        <img src="/assets/logo.png" alt="" width="34" height="34">
+        <span>Matt</span>
+      </a>
+      <button class="menu-btn icon-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="top-nav" aria-label="Menu">
+        <span class="bars"><span></span><span></span></span>
+      </button>
+      <nav class="top-nav" id="top-nav" aria-label="Main">
+        <a class="nav-link" href="/work" data-nav="work">Work</a>
+        <a class="nav-link" href="/about" data-nav="about">About</a>
+        <a class="nav-link" href="/reviews" data-nav="reviews">Reviews</a>
+        <a class="nav-link" href="/queue" data-nav="queue">Queue</a>
+        <div class="top-side">
+          <div class="top-user" id="top-user"><span class="sk" style="display:block;width:92px;height:36px;border-radius:11px"></span></div>
+        </div>
+      </nav>
+    </div>
+  </header>
+  <main id="page" tabindex="-1">
+
+    <section class="page-head moon">
+      <div class="wrap"><span class="eyebrow" data-reveal>Legal</span><h1 data-split>Privacy.</h1><p class="lede" data-reveal style="--delay:120ms">I collect as little as possible and I don't sell anything.</p><span class="updated" data-reveal style="--delay:200ms">Updated November 13, 2026</span></div>
+    </section>
+    <section class="section tight" style="padding-top:0">
+      <div class="wrap legal">
+        <nav class="toc" aria-label="On this page"><a href="#short">The short version</a><a href="#signin">Discord sign-in</a><a href="#reviews">Reviews</a><a href="#analytics">Analytics</a><a href="#cookies">Cookies &amp; storage</a><a href="#third">Other services</a><a href="#rights">Your data</a></nav>
+        <div class="prose" data-reveal><h2 id="short">The short version</h2><ul><li>Browsing is anonymous. No ad trackers, no fingerprinting.</li><li>If you sign in with Discord, I store your Discord ID, username and avatar.</li><li>If you leave a review, I store your rating and what you wrote.</li><li>Ask me and I'll delete your data.</li></ul>
+<h2 id="signin">Discord sign-in</h2><p>Sign-in uses Discord OAuth with the <strong>identify</strong> scope only. That gives me your Discord ID, username, display name and avatar. I never see your email, password, servers or messages.</p><p>When you sign in, I keep a short log (ID, name, avatar, first and last sign-in time, number of sign-ins) so I can moderate reviews and block abuse.</p>
+<h2 id="reviews">Reviews</h2><p>Reviews store your rating, text and optional project name, along with your Discord name and avatar. Approved reviews are public. Pending and declined reviews are only visible to me. You can edit or delete your review yourself at any time.</p>
+<h2 id="analytics">Analytics</h2><p>I count page views with my own simple counter. For each visit I record the page, the website you came from (domain only), your device type (mobile, tablet or desktop) and your country, which comes from the hosting provider. I don't store IP addresses or build profiles. A small flag in your browser's local storage marks whether you've already been counted as a visitor today.</p>
+<h2 id="cookies">Cookies &amp; storage</h2><ul><li><strong>mp_session</strong>: keeps you signed in for up to 7 days. Only set if you sign in.</li><li><strong>mp_oauth</strong>: a 10-minute cookie that protects the sign-in flow.</li><li><strong>Local / session storage</strong>: remembers the visitor flag above, and stops the intro animation and analytics from repeating in one visit.</li></ul>
+<h2 id="third">Other services</h2><ul><li><strong>Vercel</strong> hosts the site and stores data and portfolio images (Vercel Blob).</li><li><strong>Discord</strong> handles sign-in and serves avatars.</li><li><strong>Lanyard</strong> (api.lanyard.rest) shows my own Discord status on the contact card. It doesn't receive anything about you beyond a normal web request.</li><li><strong>Google Fonts</strong> serves the font.</li></ul>
+<h2 id="rights">Your data</h2><p>Want your reviews or sign-in record deleted? <a href="https://discord.com/users/1272978844248178730" target="_blank" rel="noopener">Message me on Discord</a> from the same account and I'll remove it.</p></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap">
+      <div class="foot-grid">
+        <div class="foot-brand">
+          <a class="brand" href="/"><img src="/assets/logo.png" alt="" width="34" height="34"><span>Matt</span></a>
+          <p>Developer &amp; designer. Banners and custom Discord bots, plus the odd side project.</p>
+        </div>
+        <div>
+          <h4>Site</h4>
+          <ul><li><a href="/work">Work</a></li><li><a href="/about">About</a></li><li><a href="/reviews">Reviews</a></li></ul>
+        </div>
+        <div>
+          <h4>Live</h4>
+          <ul><li><a href="/queue">Order queue</a></li><li><a href="/status">Status</a></li><li><a href="https://discord.com/users/1272978844248178730" target="_blank" rel="noopener">Discord</a></li></ul>
+        </div>
+        <div>
+          <h4>Legal</h4>
+          <ul><li><a href="/terms">Terms</a></li><li><a href="/privacy">Privacy</a></li></ul>
+        </div>
+      </div>
+      <div class="foot-base">
+        <span>&copy; <span data-year>2026</span> Matt. Client work shown with permission.</span>
+      </div>
+    </div>
+  </footer>
+  <script src="/js/core.js?v=5" defer></script>
+
+</body>
+</html>
