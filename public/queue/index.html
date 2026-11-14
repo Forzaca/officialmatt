@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Queue — Matt</title>
+  <meta name="description" content="Matt's live order queue and recently completed orders.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Matt's Portfolio">
+  <meta property="og:title" content="Queue — Matt">
+  <meta property="og:description" content="Matt's live order queue and recently completed orders.">
+  <meta property="og:image" content="/assets/og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#09090a">
+  
+  <link rel="icon" href="/assets/icon-32.png" type="image/png" sizes="32x32">
+  <link rel="icon" href="/assets/icon-48.png" type="image/png" sizes="48x48">
+  <link rel="apple-touch-icon" href="/assets/icon-180.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="/css/site.css?v=6">
+
+
+</head>
+<body data-page="queue">
+  <div class="ambient" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="top" id="top">
+    <div class="top-row">
+      <a class="brand" href="/" aria-label="Matt, home">
+        <img src="/assets/logo.png" alt="" width="34" height="34">
+        <span>Matt</span>
+      </a>
+      <button class="menu-btn icon-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="top-nav" aria-label="Menu">
+        <span class="bars"><span></span><span></span></span>
+      </button>
+      <nav class="top-nav" id="top-nav" aria-label="Main">
+        <a class="nav-link" href="/work" data-nav="work">Work</a>
+        <a class="nav-link" href="/about" data-nav="about">About</a>
+        <a class="nav-link" href="/reviews" data-nav="reviews">Reviews</a>
+        <a class="nav-link" href="/queue" data-nav="queue">Queue</a>
+        <div class="top-side">
+          <div class="top-user" id="top-user"><span class="sk" style="display:block;width:92px;height:36px;border-radius:11px"></span></div>
+        </div>
+      </nav>
+    </div>
+  </header>
+  <main id="page" tabindex="-1">
+
+    <section class="page-head">
+      <div class="wrap">
+        <span class="eyebrow" data-reveal>Live</span>
+        <h1 data-split>Order queue.</h1>
+        <p class="lede" data-reveal>What I'm working on now and what's next. Client names stay private unless they've said it's fine.</p>
+      </div>
+    </section>
+    <section class="section tight" style="padding-top:0">
+      <div class="wrap">
+        <div class="stat-row">
+          <div class="stat card" data-reveal><span class="label">In queue</span><b id="s-queued" class="sk">0</b><div class="sub">Waiting to start</div></div>
+          <div class="stat card" data-reveal style="--delay:60ms"><span class="label">In progress</span><b id="s-progress" class="sk">0</b><div class="sub">Being worked on</div></div>
+          <div class="stat card" data-reveal style="--delay:120ms"><span class="label">Completed</span><b id="s-done" class="sk">0</b><div class="sub">All time</div></div>
+          <div class="stat card" data-reveal style="--delay:180ms"><span class="label">Taking orders</span><b id="s-open" class="sk">Yes</b><div class="sub" data-work-note>&nbsp;</div></div>
+        </div>
+      </div>
+    </section>
+    <section class="section tight">
+      <div class="wrap">
+        <div class="spread" style="margin-bottom:22px;align-items:center">
+          <h2 class="h3" data-reveal>Current queue</h2>
+          <span class="small muted" id="q-updated" aria-live="polite"></span>
+        </div>
+        <div class="queue" id="active">
+          <div class="sk" style="height:92px;border-radius:18px"></div><div class="sk" style="height:92px;border-radius:18px"></div><div class="sk" style="height:92px;border-radius:18px"></div>
+        </div>
+      </div>
+    </section>
+    <section class="section tight">
+      <div class="wrap">
+        <h2 class="h3" style="margin-bottom:22px" data-reveal>Recently completed</h2>
+        <div class="done-list" id="done">
+          <div class="sk" style="height:64px;border-radius:16px"></div><div class="sk" style="height:64px;border-radius:16px"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap">
+      <div class="foot-grid">
+        <div class="foot-brand">
+          <a class="brand" href="/"><img src="/assets/logo.png" alt="" width="34" height="34"><span>Matt</span></a>
+          <p>Developer &amp; designer. Banners and custom Discord bots, plus the odd side project.</p>
+        </div>
+        <div>
+          <h4>Site</h4>
+          <ul><li><a href="/work">Work</a></li><li><a href="/about">About</a></li><li><a href="/reviews">Reviews</a></li></ul>
+        </div>
+        <div>
+          <h4>Live</h4>
+          <ul><li><a href="/queue">Order queue</a></li><li><a href="/status">Status</a></li><li><a href="https://discord.com/users/1272978844248178730" target="_blank" rel="noopener">Discord</a></li></ul>
+        </div>
+        <div>
+          <h4>Legal</h4>
+          <ul><li><a href="/terms">Terms</a></li><li><a href="/privacy">Privacy</a></li></ul>
+        </div>
+      </div>
+      <div class="foot-base">
+        <span>&copy; <span data-year>2026</span> Matt. Client work shown with permission.</span>
+      </div>
+    </div>
+  </footer>
+  <script src="/js/core.js?v=3" defer></script>
+  <script src="/js/queue.js?v=1" defer></script>
+</body>
+</html>
