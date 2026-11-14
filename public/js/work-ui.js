@@ -12,10 +12,9 @@
   MP.catOf = (w) => (w.category === 'web' ? 'other' : w.category);
 
   MP.workCard = (w, i = 0) => `
-    <button class="work-card" type="button" data-work-id="${esc(w.id)}" data-reveal style="--delay:${Math.min(i, 6) * 60}ms" aria-label="Open ${esc(w.title)}">
-      <div class="media" style="--thumb:url('${esc(w.images[0])}')"><img src="${esc(w.images[0])}" alt="" loading="${i < 4 ? 'eager' : 'lazy'}" decoding="async" onload="this.classList.add('loaded')"></div>
-      ${w.images.length > 1 ? `<span class="badge multi" style="background:rgba(10,10,12,.6)">${icon.image.replace('<svg', '<svg style="width:13px;height:13px"')}${w.images.length}</span>` : ''}
-      <div class="info"><b>${esc(w.title)}</b>${w.client ? `<span>${esc(w.client)}</span>` : ''}</div>
+    <button class="work-card" type="button" data-work-id="${esc(w.id)}" data-reveal style="--delay:${Math.min(i, 6) * 60}ms" aria-label="Open ${esc(MP.CATEGORY[w.category]?.short || 'project')}">
+      <div class="media"><img src="${esc(w.images[0])}" alt="" loading="${i < 4 ? 'eager' : 'lazy'}" decoding="async" onload="this.closest('.media').classList.add('loaded')"></div>
+      ${w.images.length > 1 ? `<span class="badge multi">${icon.image.replace('<svg', '<svg style="width:13px;height:13px"')}${w.images.length}</span>` : ''}
     </button>`;
 
   MP.workSkeleton = (n = 6) => Array.from({ length: n }, () => '<div class="work-sk sk"></div>').join('');
@@ -26,15 +25,14 @@
     const m = MP.modal({
       wide: true,
       className: 'lb',
-      label: w.title,
+      label: MP.CATEGORY[w.category]?.short || 'Project',
       html: `
         <button class="icon-btn lb-close" data-close aria-label="Close">${icon.x}</button>
         <div class="lb-stage">
-          <img alt="${esc(w.title)}" data-img>
+          <img alt="" data-img>
           ${many ? `<button class="lb-nav prev" data-prev aria-label="Previous image">${icon.left}</button><button class="lb-nav next" data-next aria-label="Next image">${icon.right}</button>
           <div class="lb-dots">${w.images.map(() => '<span></span>').join('')}</div>` : ''}
-        </div>
-        <div class="lb-caption"><h3>${esc(w.title)}</h3>${w.client ? `<span>${esc(w.client)}</span>` : ''}</div>`,
+        </div>`,
     });
     const img = m.box.querySelector('[data-img]');
     const dots = m.box.querySelectorAll('.lb-dots span');

@@ -20,18 +20,21 @@
     eyeOff: s('<path d="M3 3l18 18M10.6 6.1A9.7 9.7 0 0 1 12 6c5 0 9 6 9 6a17 17 0 0 1-3 3.5M6.6 6.6C4.1 8.2 3 12 3 12s4 6 9 6a8.8 8.8 0 0 0 4.4-1.2"/>'),
     ban: s('<circle cx="12" cy="12" r="9"/><path d="m5.6 5.6 12.8 12.8"/>'),
     download: s('<path d="M12 4v12M7 11l5 5 5-5M4 20h16"/>'),
+    servers: s('<rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/><path d="M7 7.5h.01M7 16.5h.01"/>'),
     ext: s('<path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/>'),
   };
 
   const TABS = [
     { id: 'overview', label: 'Overview', eyebrow: 'Dashboard' },
     { id: 'work', label: 'Work', eyebrow: 'Portfolio' },
+    { id: 'servers', label: 'Servers', eyebrow: 'About page' },
     { id: 'reviews', label: 'Reviews', eyebrow: 'Moderation' },
     { id: 'orders', label: 'Orders', eyebrow: 'Queue' },
     { id: 'people', label: 'People', eyebrow: 'Access' },
     { id: 'settings', label: 'Settings', eyebrow: 'Site' },
   ];
-  const CATS = { banners: 'Banner', bots: 'Discord bot', web: 'Web UI/UX', other: 'Other' };
+  const CATS = { banners: 'Banner', bots: 'Discord bot', other: 'Side project' };
+  const catLabel = (c) => CATS[c === 'web' ? 'other' : c] || 'Project';
   const ORDER_STATUS = { queued: ['Queued', ''], in_progress: ['In progress', 'blue'], review: ['With client', 'amber'], completed: ['Completed', 'green'] };
 
   const A = (op, opts) => MP.api(`/api/admin?op=${op}`, opts);
@@ -111,7 +114,7 @@
     renderNav();
     actions.innerHTML = '';
     view.style.animation = 'none'; void view.offsetWidth; view.style.animation = '';
-    ({ overview, work, reviews, orders, people, settings })[tab]();
+    ({ overview, work, servers, reviews, orders, people, settings })[tab]();
     scrollTo({ top: 0, behavior: 'smooth' });
   }
 
@@ -248,6 +251,130 @@
     ro.observe(el);
   }
 
+  let serverCache = [];
+  async function servers() {
+    actions.innerHTML = `<button class="btn sm" type="button" id="new-server">${I.plus}Add server</button>`;
+    $('#new-server').addEventListener('click', () => editServer());
+    view.innerHTML = loading(4, 72);
+    try { serverCache = (await A('servers')).servers; } catch (err) { view.innerHTML = errorBox(err); return; }
+    if (state.tab !== 'servers') return;
+    renderServers();
+  }
+
+  function renderServers() {
+    if (!serverCache.length) {
+      view.innerHTML = `<div class="a-empty"><b>No servers yet</b>Add the communities you've worked with. Their logos scroll along the About page.<div style="margin-top:16px"><button class="btn sm" type="button" data-new>${I.plus}Add server</button></div></div>`;
+      $('[data-new]', view).addEventListener('click', () => editServer());
+      return;
+    }
+    view.innerHTML = `<p class="small muted" style="margin-bottom:14px">${serverCache.length} server${serverCache.length === 1 ? '' : 's'} on the About page, in this order.</p>
+      <div class="rows">${serverCache.map((s, i) => `
+        <div class="a-row card" style="--i:${i}">
+          <img class="thumb logo" src="${esc(s.logo)}" alt="" loading="lazy">
+          <div style="min-width:0"><div class="title">${esc(s.name || 'Unnamed server')}</div></div>
+          <div class="actions">
+            <button class="icon-btn" type="button" data-move="-1" data-id="${s.id}" aria-label="Move up" ${i === 0 ? 'disabled style="opacity:.3"' : ''}>${I.up}</button>
+            <button class="icon-btn" type="button" data-move="1" data-id="${s.id}" aria-label="Move down" ${i === serverCache.length - 1 ? 'disabled style="opacity:.3"' : ''}>${I.down}</button>
+            <button class="icon-btn" type="button" data-edit="${s.id}" aria-label="Edit">${I.edit}</button>
+            <button class="icon-btn" type="button" data-del="${s.id}" aria-label="Delete" style="color:#ff8a83">${I.trash}</button>
+          </div>
+        </div>`).join('')}</div>`;
+    $$('[data-edit]', view).forEach((b) => b.addEventListener('click', () => editServer(serverCache.find((s) => s.id === b.dataset.edit))));
+    $$('[data-del]', view).forEach((b) => b.addEventListener('click', async () => {
+      const s = serverCache.find((x) => x.id === b.dataset.del);
+      if (!(await MP.confirm('Remove this server?', 'Its logo is removed from the About page.', { okLabel: 'Remove', danger: true }))) return;
+      try { await post('server-delete', { id: s.id }); serverCache = serverCache.filter((x) => x.id !== s.id); MP.toast('Server removed'); renderServers(); }
+      catch (err) { MP.toast(err.message, 'bad'); }
+    }));
+    $$('[data-move]', view).forEach((b) => b.addEventListener('click', async () => {
+      const i = serverCache.findIndex((s) => s.id === b.dataset.id);
+      const j = i + Number(b.dataset.move);
+      if (j < 0 || j >= serverCache.length) return;
+      [serverCache[i], serverCache[j]] = [serverCache[j], serverCache[i]];
+      renderServers();
+      try { await post('server-reorder', { ids: serverCache.map((s) => s.id) }); } catch (err) { MP.toast(err.message, 'bad'); }
+    }));
+  }
+
+  function editServer(item) {
+    let logo = item?.logo || '';
+    let fresh = '';
+    let saved = false;
+    let uploading = false;
+    const m = MP.modal({
+      label: item ? 'Edit server' : 'Add server',
+      className: 'editor',
+      onClose: () => { if (!saved && fresh) post('discard', { urls: [fresh] }).catch(() => {}); },
+      html: `
+        <div class="modal-head"><h3>${item ? 'Edit server' : 'Add server'}</h3><button class="icon-btn" data-close aria-label="Close">${icon.x}</button></div>
+        <form id="sf" novalidate>
+          <div class="form-grid">
+            <div class="field full">
+              <span class="label">Logo <span class="muted">(square works best)</span></span>
+              <div class="uploads" id="sf-ups"></div>
+              <input type="file" id="sf-file" accept="image/png,image/jpeg,image/webp,image/gif" hidden>
+            </div>
+            <div class="field full"><label for="sf-name">Server name <span class="muted">(optional)</span></label><input class="input" id="sf-name" maxlength="60" value="${esc(item?.name || '')}" placeholder="e.g. Big Sky Roleplay"></div>
+          </div>
+          <div class="modal-foot"><button class="btn ghost sm" type="button" data-close>Cancel</button><button class="btn sm" type="submit" id="sf-save">${item ? 'Save changes' : 'Add server'}</button></div>
+        </form>`,
+    });
+    const box = m.box;
+    const ups = $('#sf-ups', box);
+    const input = $('#sf-file', box);
+    const render = () => {
+      ups.innerHTML = uploading
+        ? '<div class="up"><div class="busy"><div class="spinner"></div></div></div>'
+        : logo
+          ? `<div class="up"><img src="${esc(logo)}" alt="" style="object-fit:contain;padding:10px"><div class="tools"><span></span><button type="button" data-x aria-label="Replace">${I.edit}</button></div></div>`
+          : `<div class="up add" id="sf-add" tabindex="0" role="button">${icon.upload}<span>Upload logo</span></div>`;
+      const add = $('#sf-add', ups);
+      if (add) {
+        add.addEventListener('click', () => input.click());
+        add.addEventListener('keydown', (e) => (e.key === 'Enter' || e.key === ' ') && (e.preventDefault(), input.click()));
+        ['dragenter', 'dragover'].forEach((ev) => add.addEventListener(ev, (e) => { e.preventDefault(); add.classList.add('over'); }));
+        ['dragleave', 'drop'].forEach((ev) => add.addEventListener(ev, (e) => { e.preventDefault(); add.classList.remove('over'); }));
+        add.addEventListener('drop', (e) => e.dataTransfer.files[0] && handle(e.dataTransfer.files[0]));
+      }
+      $('[data-x]', ups)?.addEventListener('click', () => input.click());
+    };
+    async function handle(file) {
+      uploading = true;
+      render();
+      try {
+        const blob = await MP.compressImage(file, { max: 512, quality: 0.9 });
+        const { url } = await A(`upload&dir=servers&name=${encodeURIComponent(file.name)}`, { raw: blob });
+        if (fresh) post('discard', { urls: [fresh] }).catch(() => {});
+        fresh = url;
+        logo = url;
+      } catch (err) {
+        MP.toast(err.message, 'bad', 5000);
+      } finally {
+        uploading = false;
+        render();
+      }
+    }
+    input.addEventListener('change', () => { if (input.files[0]) handle(input.files[0]); input.value = ''; });
+    render();
+    $('#sf', box).addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (uploading) return MP.toast('Wait for the upload to finish.', 'info');
+      if (!logo) return MP.toast('Upload a logo first.', 'bad');
+      const btn = $('#sf-save', box);
+      btn.classList.add('loading');
+      try {
+        await post('server-save', { id: item?.id, name: $('#sf-name', box).value, logo });
+        saved = true;
+        MP.toast(item ? 'Server updated' : 'Server added');
+        m.close();
+        servers();
+      } catch (err) {
+        MP.toast(err.message, 'bad', 5000);
+        btn.classList.remove('loading');
+      }
+    });
+  }
+
   let workCache = [];
   async function work() {
     actions.innerHTML = `<button class="btn sm" type="button" id="new-work">${I.plus}New project</button>`;
@@ -269,8 +396,8 @@
         <div class="a-row card" style="--i:${i}">
           <img class="thumb" src="${esc(w.images[0])}" alt="" loading="lazy">
           <div style="min-width:0">
-            <div class="title">${esc(w.title)}</div>
-            <div class="meta"><span class="badge dusk">${CATS[w.category] || 'Other'}</span>${w.featured ? '<span class="badge amber">Featured</span>' : ''}${w.hidden ? '<span class="badge">Hidden</span>' : ''}<span>${w.images.length} image${w.images.length === 1 ? '' : 's'}</span>${w.year ? `<span>· ${esc(w.year)}</span>` : ''}</div>
+            <div class="title">${esc(catLabel(w.category))}</div>
+            <div class="meta">${w.featured ? '<span class="badge amber">Featured</span>' : ''}${w.hidden ? '<span class="badge">Hidden</span>' : ''}<span>${w.images.length} image${w.images.length === 1 ? '' : 's'}</span>${w.year ? `<span>· ${esc(w.year)}</span>` : ''}</div>
           </div>
           <div class="actions">
             <button class="icon-btn" type="button" data-move="-1" data-id="${w.id}" aria-label="Move up" ${i === 0 ? 'disabled style="opacity:.3"' : ''}>${I.up}</button>
@@ -283,7 +410,7 @@
     $$('[data-edit]', view).forEach((b) => b.addEventListener('click', () => editWork(workCache.find((w) => w.id === b.dataset.edit))));
     $$('[data-del]', view).forEach((b) => b.addEventListener('click', async () => {
       const w = workCache.find((x) => x.id === b.dataset.del);
-      if (!(await MP.confirm(`Delete "${w.title}"?`, 'The project and its images are removed for good.', { okLabel: 'Delete', danger: true }))) return;
+      if (!(await MP.confirm('Delete this project?', 'The project and its images are removed for good.', { okLabel: 'Delete', danger: true }))) return;
       try { await post('work-delete', { id: w.id }); workCache = workCache.filter((x) => x.id !== w.id); MP.toast('Project deleted'); renderWorkList(); }
       catch (err) { MP.toast(err.message, 'bad'); }
     }));
@@ -312,13 +439,7 @@
         <div class="modal-head"><h3>${item ? 'Edit project' : 'New project'}</h3><button class="icon-btn" data-close aria-label="Close">${icon.x}</button></div>
         <form id="wf" novalidate>
           <div class="form-grid">
-            <div class="field full"><label for="wf-title">Title</label><input class="input" id="wf-title" maxlength="90" value="${esc(w.title)}" placeholder="e.g. Nightfall RP server banner" autofocus></div>
-            <div class="field"><label for="wf-cat">Category</label><select class="select" id="wf-cat">${Object.entries(CATS).map(([k, v]) => `<option value="${k}" ${w.category === k ? 'selected' : ''}>${v}</option>`).join('')}</select></div>
-            <div class="field"><label for="wf-year">Year</label><input class="input" id="wf-year" maxlength="4" inputmode="numeric" value="${esc(w.year || '')}"></div>
-            <div class="field"><label for="wf-client">Client <span class="muted">(optional)</span></label><input class="input" id="wf-client" maxlength="60" value="${esc(w.client || '')}"></div>
-            <div class="field"><label for="wf-link">Live link <span class="muted">(optional)</span></label><input class="input" id="wf-link" type="url" maxlength="300" value="${esc(w.link || '')}" placeholder="https://"></div>
-            <div class="field full"><label for="wf-desc">Description</label><textarea class="textarea" id="wf-desc" maxlength="1200" placeholder="What was the brief, what did you make, anything worth pointing out?">${esc(w.description || '')}</textarea></div>
-            <div class="field full"><label for="wf-tags">Tags <span class="muted">(comma separated)</span></label><input class="input" id="wf-tags" value="${esc((w.tags || []).join(', '))}" placeholder="discord.js, Figma, Photoshop"></div>
+            <div class="field full"><label for="wf-cat">Category</label><select class="select" id="wf-cat">${Object.entries(CATS).map(([k, v]) => `<option value="${k}" ${(w.category === 'web' ? 'other' : w.category) === k ? 'selected' : ''}>${v}</option>`).join('')}</select></div>
             <div class="field full">
               <span class="label">Images <span class="muted">(first one is the cover · up to 12)</span></span>
               <div class="uploads" id="wf-ups"></div>
@@ -387,13 +508,7 @@
       try {
         const { item: savedItem } = await post('work-save', {
           id: item?.id,
-          title: $('#wf-title', box).value,
           category: $('#wf-cat', box).value,
-          year: $('#wf-year', box).value,
-          client: $('#wf-client', box).value,
-          link: $('#wf-link', box).value,
-          description: $('#wf-desc', box).value,
-          tags: $('#wf-tags', box).value,
           images: images.filter((x) => !x.startsWith('pending:')),
           featured: $('#wf-feat', box).checked,
           hidden: $('#wf-hidden', box).checked,

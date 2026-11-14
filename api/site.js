@@ -35,6 +35,11 @@ async function work(req, res) {
   });
 }
 
+async function servers(req, res) {
+  const list = await readDoc('servers', []);
+  ok(res, { ok: true, servers: list.filter((s) => s.logo).map(({ name, logo }) => ({ name, logo })) });
+}
+
 async function reviews(req, res) {
   const all = await readDoc('reviews', []);
   const approved = all.filter((r) => r.status === 'approved').sort((a, b) => (b.approvedAt || b.createdAt) - (a.approvedAt || a.createdAt));
@@ -90,7 +95,7 @@ async function file(req, res) {
   if (!sent) fail(res, 404, 'File not found.');
 }
 
-const ops = { bootstrap, work, reviews, orders, track, file };
+const ops = { bootstrap, work, servers, reviews, orders, track, file };
 
 export default wrap(async (req, res) => {
   const fn = ops[query(req).op];

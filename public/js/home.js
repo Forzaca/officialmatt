@@ -88,17 +88,6 @@
         const n = counts[el.dataset.count] || 0;
         el.textContent = n ? `${n} project${n === 1 ? '' : 's'}` : '';
       });
-      const newest = [...work].sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
-      $$('[data-need]').forEach((card) => {
-        const hit = newest.find((w) => MP.catOf(w) === card.dataset.need && w.images?.[0]);
-        if (!hit) return;
-        const img = new Image();
-        img.alt = '';
-        img.decoding = 'async';
-        img.onload = () => img.classList.add('loaded');
-        img.src = hit.images[0];
-        card.querySelector('.need-media').appendChild(img);
-      });
       setFact('#fact-work', work.length);
     })
     .catch(() => {

@@ -113,40 +113,39 @@ async function upload(req, res) {
   const buf = await readRaw(req, 4.4 * 1024 * 1024);
   const kind = sniffImage(buf);
   if (!kind) return fail(res, 400, 'Upload a PNG, JPG, WebP or GIF.');
-  const base = clean(query(req).name || 'work', 60).toLowerCase().replace(/\.[a-z0-9]+$/, '').replace(/[^a-z0-9-]+/g, '-').replace(/^-|-$/g, '') || 'work';
-  const blob = await uploadFile(`work/${base}.${kind.ext}`, buf, kind.type);
+  const dir = query(req).dir === 'servers' ? 'servers' : 'work';
+  const base = clean(query(req).name || dir, 60).toLowerCase().replace(/\.[a-z0-9]+$/, '').replace(/[^a-z0-9-]+/g, '-').replace(/^-|-$/g, '') || 'work';
+  const blob = await uploadFile(`${dir}/${base}.${kind.ext}`, buf, kind.type);
   ok(res, { ok: true, url: blob.url, pathname: blob.pathname, size: buf.length, type: kind.type });
 }
 
 async function discard(req, res) {
   const { urls } = await readJson(req, 16384);
   const work = await readDoc('work', []);
-  const inUse = new Set(work.flatMap((w) => w.images || []));
+  const servers = await readDoc('servers', []);
+  const inUse = new Set([...work.flatMap((w) => w.images || []), ...servers.map((s) => s.logo)]);
   await removeFiles((urls || []).filter((u) => !inUse.has(u)));
   ok(res);
 }
 
 async function workSave(req, res) {
   const b = await readJson(req, 64 * 1024);
-  const title = clean(b.title, 90);
-  if (!title) return fail(res, 400, 'Give the project a title.');
   const category = CATEGORIES.includes(b.category) ? b.category : 'other';
+  const DEFAULT_TITLE = { banners: 'Banner', bots: 'Discord bot', web: 'Side project', other: 'Side project' };
   const images = (Array.isArray(b.images) ? b.images : []).filter(isOurBlobUrl).slice(0, 12);
   if (!images.length) return fail(res, 400, 'Add at least one image.');
   let link = clean(b.link, 300);
   if (link && !/^https?:\/\//i.test(link)) link = '';
-  const fields = {
-    title,
-    category,
-    images,
-    link,
-    description: clean(b.description, 1200),
-    client: clean(b.client, 60),
-    year: clean(String(b.year || ''), 4),
-    tags: (Array.isArray(b.tags) ? b.tags : String(b.tags || '').split(',')).map((t) => clean(t, 24)).filter(Boolean).slice(0, 8),
-    featured: Boolean(b.featured),
-    hidden: Boolean(b.hidden),
-  };
+  // The admin form only sends category, images, featured and hidden.
+  // Older fields are kept on edit and only overwritten when sent.
+  const fields = { category, images, featured: Boolean(b.featured), hidden: Boolean(b.hidden) };
+  const title = clean(b.title, 90);
+  if (title) fields.title = title;
+  if ('link' in b) fields.link = link;
+  if ('description' in b) fields.description = clean(b.description, 1200);
+  if ('client' in b) fields.client = clean(b.client, 60);
+  if ('year' in b) fields.year = clean(String(b.year || ''), 4);
+  if ('tags' in b) fields.tags = (Array.isArray(b.tags) ? b.tags : String(b.tags || '').split(',')).map((t) => clean(t, 24)).filter(Boolean).slice(0, 8);
 
   let removed = [];
   let saved;
@@ -158,13 +157,58 @@ async function workSave(req, res) {
       Object.assign(item, fields, { updatedAt: Date.now() });
       saved = item;
     } else {
-      saved = { id: uid('w_'), ...fields, order: -Date.now(), createdAt: Date.now() };
+      saved = { id: uid('w_'), title: DEFAULT_TITLE[category], link: '', description: '', client: '', year: String(new Date().getFullYear()), tags: [], ...fields, order: -Date.now(), createdAt: Date.now() };
       list.push(saved);
     }
     return list;
   });
   await removeFiles(removed);
   ok(res, { ok: true, item: saved });
+}
+
+const listServers = async (req, res) => ok(res, { ok: true, servers: await readDoc('servers', []) });
+
+async function serverSave(req, res) {
+  const b = await readJson(req, 4096);
+  const name = clean(b.name, 60);
+  const logo = isOurBlobUrl(b.logo) ? b.logo : '';
+  if (!logo) return fail(res, 400, 'Upload a logo.');
+  let saved;
+  let old = '';
+  await updateDoc('servers', [], (list) => {
+    const item = b.id && list.find((s) => s.id === b.id);
+    if (item) {
+      if (item.logo !== logo) old = item.logo;
+      Object.assign(item, { name, logo, updatedAt: Date.now() });
+      saved = item;
+    } else {
+      saved = { id: uid('s_'), name, logo, createdAt: Date.now() };
+      list.push(saved);
+    }
+    return list;
+  });
+  if (old) await removeFiles([old]);
+  ok(res, { ok: true, server: saved });
+}
+
+async function serverDelete(req, res) {
+  const { id } = await readJson(req, 2048);
+  let removed;
+  await updateDoc('servers', [], (list) => {
+    const i = list.findIndex((s) => s.id === id);
+    if (i < 0) throw notFound('Server');
+    removed = list.splice(i, 1)[0];
+    return list;
+  });
+  await removeFiles([removed.logo]);
+  ok(res);
+}
+
+async function serverReorder(req, res) {
+  const { ids } = await readJson(req, 16 * 1024);
+  if (!Array.isArray(ids)) return fail(res, 400, 'ids[] required.');
+  await updateDoc('servers', [], (list) => list.sort((a, c) => ids.indexOf(a.id) - ids.indexOf(c.id)));
+  ok(res);
 }
 
 async function workDelete(req, res) {
@@ -306,10 +350,11 @@ async function unban(req, res) {
   ok(res);
 }
 
-const reads = { overview, reviews: listReviews, work: listWork, orders: listOrders, people, export: exportAll };
+const reads = { overview, reviews: listReviews, work: listWork, servers: listServers, orders: listOrders, people, export: exportAll };
 const writes = {
   settings, upload, discard,
   'work-save': workSave, 'work-delete': workDelete, 'work-reorder': workReorder,
+  'server-save': serverSave, 'server-delete': serverDelete, 'server-reorder': serverReorder,
   'review-status': reviewStatus, 'review-delete': reviewDelete,
   'order-save': orderSave, 'order-delete': orderDelete, 'order-reorder': orderReorder,
   ban, unban,

@@ -20,7 +20,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
-  <link rel="stylesheet" href="/css/site.css?v=11">
+  <link rel="stylesheet" href="/css/site.css?v=21">
 
 
 </head>
@@ -59,46 +59,31 @@
     <section class="section tight" style="padding-top:0">
       <div class="wrap about-split">
         <div class="about-copy">
-          <p data-reveal>I'm Matt, a developer and designer. Most of my time goes into <span class="orb" style="--orb:255,116,72">banners and graphics</span> and custom <span class="orb" style="--orb:139,108,255">Discord bots</span>. On the side I take on websites and other one-off <span class="orb" style="--orb:80,200,255;--ox:0%">projects</span>, usually because they sounded fun.</p>
-          <p data-reveal>I like work that's quick to understand and nice to use. A banner should read at a <span class="orb sm" style="--orb:255,200,90">glance</span>. A bot should do its job without anyone needing a guide. A website should feel obvious the first time you open it.</p>
+          <p data-reveal>I'm Matt, a developer and designer. Most of my time goes into banners and graphics and custom Discord bots. On the side I take on websites and other one-off projects, usually because they sounded fun.</p>
+          <p data-reveal>I like work that's quick to understand and nice to use. A banner should read at a glance. A bot should do its job without anyone needing a guide. A website should feel obvious the first time you open it.</p>
           <p data-reveal>Most people find me through Discord, and that's still the best way to reach me. I keep a public <a href="/queue" style="text-decoration:underline;text-underline-offset:3px">order queue</a> so you always know where your project stands.</p>
           <div class="row" style="margin-top:28px" data-reveal><span class="pill sk" data-work-status>Checking status</span></div>
         </div>
-        <div class="contact glass" id="contact" data-lanyard data-reveal="scale">
-          <div class="contact-top"><span class="sk" style="width:72px;height:72px;border-radius:22px"></span><div style="flex:1;display:grid;gap:10px"><span class="sk sk-line lg" style="width:60%"></span><span class="sk sk-line" style="width:40%"></span></div></div>
-          <span class="sk" style="height:64px;border-radius:16px"></span>
-          <div class="contact-actions"><span class="sk" style="height:46px;border-radius:14px"></span><span class="sk" style="height:46px;border-radius:14px"></span></div>
+        <div class="about-side">
+          <div class="contact glass" id="contact" data-lanyard data-reveal="scale">
+            <div class="contact-top"><span class="sk" style="width:72px;height:72px;border-radius:22px"></span><div style="flex:1;display:grid;gap:10px"><span class="sk sk-line lg" style="width:60%"></span><span class="sk sk-line" style="width:40%"></span></div></div>
+            <div class="contact-actions"><span class="sk" style="height:46px;border-radius:14px"></span><span class="sk" style="height:46px;border-radius:14px"></span></div>
+          </div>
+          <div class="now card" id="now" data-reveal style="--delay:120ms" aria-live="polite">
+            <div class="now-head"><span class="now-dot"></span><b>Right now</b></div>
+            <div class="now-body"><span class="sk" style="height:56px;border-radius:14px"></span></div>
+          </div>
         </div>
       </div>
     </section>
 
-    <section class="section">
-      <div class="wrap">
-        <div class="section-head">
-          <span class="eyebrow" data-reveal>Process</span>
-          <h2 class="h2" data-split>How a project usually goes.</h2>
-        </div>
-        <div class="steps">
-          <div class="step card" data-reveal><h3>Talk it through</h3><p>You tell me what you need and send any references. I ask whatever I need to get it right.</p></div>
-          <div class="step card" data-reveal style="--delay:80ms"><h3>First pass</h3><p>Your order goes on the queue. I send a draft or a working build as soon as there's something worth showing.</p></div>
-          <div class="step card" data-reveal style="--delay:160ms"><h3>Tweak</h3><p>You tell me what's off. I fix it. We go back and forth until it's right.</p></div>
-          <div class="step card" data-reveal style="--delay:240ms"><h3>Hand-off</h3><p>Final files, source or a deployed bot, plus anything you need to keep it running.</p></div>
-        </div>
-      </div>
+    <section class="servers-sec" id="servers" hidden>
+      <div class="wrap"><h2 class="h3" data-reveal>Servers I've worked with</h2></div>
+      <div class="logo-marquee" data-reveal><div class="logo-track"></div></div>
+      <ul class="sr-only logo-list"></ul>
     </section>
 
-    <section class="section tight">
-      <div class="wrap">
-        <div class="section-head">
-          <span class="eyebrow" data-reveal>Toolkit</span>
-          <h2 class="h2" data-split>What I work with.</h2>
-        </div>
-        <div class="tool-marquee" data-reveal>
-          <div class="tool-row"><div class="tool-track"><span class="tool" style="--c:#a259ff"><i></i>Figma</span><span class="tool" style="--c:#31a8ff"><i></i>Photoshop</span><span class="tool" style="--c:#ff9a00"><i></i>Illustrator</span><span class="tool" style="--c:#00c4cc"><i></i>Canva</span><span class="tool" style="--c:#ea7600"><i></i>Blender</span><span class="tool" aria-hidden="true" style="--c:#a259ff"><i></i>Figma</span><span class="tool" aria-hidden="true" style="--c:#31a8ff"><i></i>Photoshop</span><span class="tool" aria-hidden="true" style="--c:#ff9a00"><i></i>Illustrator</span><span class="tool" aria-hidden="true" style="--c:#00c4cc"><i></i>Canva</span><span class="tool" aria-hidden="true" style="--c:#ea7600"><i></i>Blender</span><span class="tool" aria-hidden="true" style="--c:#a259ff"><i></i>Figma</span><span class="tool" aria-hidden="true" style="--c:#31a8ff"><i></i>Photoshop</span><span class="tool" aria-hidden="true" style="--c:#ff9a00"><i></i>Illustrator</span><span class="tool" aria-hidden="true" style="--c:#00c4cc"><i></i>Canva</span><span class="tool" aria-hidden="true" style="--c:#ea7600"><i></i>Blender</span><span class="tool" aria-hidden="true" style="--c:#a259ff"><i></i>Figma</span><span class="tool" aria-hidden="true" style="--c:#31a8ff"><i></i>Photoshop</span><span class="tool" aria-hidden="true" style="--c:#ff9a00"><i></i>Illustrator</span><span class="tool" aria-hidden="true" style="--c:#00c4cc"><i></i>Canva</span><span class="tool" aria-hidden="true" style="--c:#ea7600"><i></i>Blender</span></div></div>
-          <div class="tool-row rev"><div class="tool-track"><span class="tool" style="--c:#f7df1e"><i></i>JavaScript</span><span class="tool" style="--c:#3178c6"><i></i>TypeScript</span><span class="tool" style="--c:#5fa04e"><i></i>Node.js</span><span class="tool" style="--c:#5865f2"><i></i>discord.js</span><span class="tool" style="--c:#e34f26"><i></i>HTML &amp; CSS</span><span class="tool" style="--c:#2f9df4"><i></i>VS Code</span><span class="tool" style="--c:#ffffff"><i></i>Vercel</span><span class="tool" aria-hidden="true" style="--c:#f7df1e"><i></i>JavaScript</span><span class="tool" aria-hidden="true" style="--c:#3178c6"><i></i>TypeScript</span><span class="tool" aria-hidden="true" style="--c:#5fa04e"><i></i>Node.js</span><span class="tool" aria-hidden="true" style="--c:#5865f2"><i></i>discord.js</span><span class="tool" aria-hidden="true" style="--c:#e34f26"><i></i>HTML &amp; CSS</span><span class="tool" aria-hidden="true" style="--c:#2f9df4"><i></i>VS Code</span><span class="tool" aria-hidden="true" style="--c:#ffffff"><i></i>Vercel</span><span class="tool" aria-hidden="true" style="--c:#f7df1e"><i></i>JavaScript</span><span class="tool" aria-hidden="true" style="--c:#3178c6"><i></i>TypeScript</span><span class="tool" aria-hidden="true" style="--c:#5fa04e"><i></i>Node.js</span><span class="tool" aria-hidden="true" style="--c:#5865f2"><i></i>discord.js</span><span class="tool" aria-hidden="true" style="--c:#e34f26"><i></i>HTML &amp; CSS</span><span class="tool" aria-hidden="true" style="--c:#2f9df4"><i></i>VS Code</span><span class="tool" aria-hidden="true" style="--c:#ffffff"><i></i>Vercel</span><span class="tool" aria-hidden="true" style="--c:#f7df1e"><i></i>JavaScript</span><span class="tool" aria-hidden="true" style="--c:#3178c6"><i></i>TypeScript</span><span class="tool" aria-hidden="true" style="--c:#5fa04e"><i></i>Node.js</span><span class="tool" aria-hidden="true" style="--c:#5865f2"><i></i>discord.js</span><span class="tool" aria-hidden="true" style="--c:#e34f26"><i></i>HTML &amp; CSS</span><span class="tool" aria-hidden="true" style="--c:#2f9df4"><i></i>VS Code</span><span class="tool" aria-hidden="true" style="--c:#ffffff"><i></i>Vercel</span></div></div>
-        </div>
-      </div>
-    </section>
+
 
     <section class="section">
       <div class="wrap narrow">
@@ -142,7 +127,8 @@
       </div>
     </div>
   </footer>
-  <script src="/js/core.js?v=4" defer></script>
+  <script src="/js/core.js?v=5" defer></script>
+  <script src="/js/about.js?v=1" defer></script>
 
 </body>
 </html>

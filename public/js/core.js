@@ -422,7 +422,8 @@
   })();
 
   let lanyardPromise;
-  MP.lanyard = () => {
+  MP.lanyard = (fresh) => {
+    if (fresh) lanyardPromise = null;
     lanyardPromise ||= fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`)
       .then((r) => r.json())
       .then((j) => (j.success ? j.data : null))
