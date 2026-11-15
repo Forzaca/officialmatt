@@ -820,31 +820,36 @@ html.first .preload {
 /* ---------- 404 ---------- */
 .lost { min-height: 86svh; }
 .lost::before {
-  content: ""; position: absolute; left: 50%; top: 46%; width: min(820px, 130vw); aspect-ratio: 2 / 1; translate: -50% -50%; z-index: -1; pointer-events: none;
-  background: radial-gradient(closest-side, rgba(255, 116, 72, 0.16), rgba(139, 108, 255, 0.1) 55%, transparent);
-  filter: blur(30px);
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 56px 56px; background-position: center;
+  -webkit-mask-image: radial-gradient(ellipse 60% 55% at 50% 45%, #000 20%, transparent 75%);
+  mask-image: radial-gradient(ellipse 60% 55% at 50% 45%, #000 20%, transparent 75%);
 }
 .lost-inner { display: grid; justify-items: center; }
+.lost-eyebrow { margin-bottom: 6px; color: var(--ember); }
+.lost-eyebrow::before { opacity: 0.8; }
 .lost-code {
-  display: flex; align-items: center; gap: 0.06em; margin-bottom: 18px;
-  font: 800 clamp(96px, 20vw, 220px) / 1 var(--font-display); letter-spacing: -0.06em;
-}
-.lost-code > span:not(.lost-orb) {
-  padding: 0 0.02em 0.06em; color: transparent;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.12));
+  position: relative; margin-bottom: 22px; padding: 0 0.04em;
+  font: 800 clamp(110px, 22vw, 240px) / 0.9 var(--font-display); letter-spacing: -0.07em;
+  color: transparent; -webkit-text-stroke: 1.5px var(--line-3);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 80%);
   -webkit-background-clip: text; background-clip: text;
 }
-.lost-orb {
-  position: relative; width: 0.74em; height: 0.74em; border-radius: 50%; margin: 0 0.04em; flex: none;
-  background:
-    radial-gradient(circle at 30% 26%, rgba(255, 255, 255, 0.9) 0 3%, rgba(255, 255, 255, 0.25) 11%, transparent 32%),
-    radial-gradient(circle at 70% 78%, rgba(255, 116, 72, 0.7), rgba(139, 108, 255, 0.35) 50%, transparent 74%),
-    rgba(255, 255, 255, 0.03);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22), inset -14px -18px 36px rgba(0, 0, 0, 0.35), inset 10px 12px 30px rgba(255, 255, 255, 0.1), 0 30px 70px -20px rgba(255, 116, 72, 0.55);
-  -webkit-backdrop-filter: blur(6px) saturate(160%); backdrop-filter: blur(6px) saturate(160%);
-  animation: lost-bob 6s var(--ease-io) infinite alternate;
+.lost-code::after {
+  content: ""; position: absolute; left: 8%; right: 8%; bottom: -6px; height: 2px; border-radius: 2px;
+  background: linear-gradient(90deg, transparent, var(--ember) 30%, var(--dusk) 70%, transparent);
+  opacity: 0.85;
 }
-@keyframes lost-bob { to { transform: translateY(-0.06em) rotate(8deg); } }
+.center-page p.lost-path {
+  display: inline-flex; align-items: center; gap: 10px; max-width: 100%; margin: 0 auto 26px; padding: 8px 14px;
+  border: 1px solid var(--line-2); border-radius: 999px; background: var(--surface);
+  font-size: 13px; color: var(--text-3); overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+}
+.lost-path #lost-path { overflow: hidden; text-overflow: ellipsis; text-decoration: line-through; text-decoration-color: var(--text-4); }
+.lost-dot { width: 7px; height: 7px; flex: none; border-radius: 50%; background: var(--red); box-shadow: 0 0 0 4px var(--red-soft); }
 .center-page.lost h1 { font-size: clamp(34px, 5vw, 56px); letter-spacing: -0.04em; line-height: 1.1; margin-top: 0; }
 .center-page.lost p { font-size: clamp(16px, 1.6vw, 18px); margin-top: 14px; max-width: 42ch; }
 .lost-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; margin-top: 30px; padding-top: 22px; border-top: 1px solid var(--line); font-size: 14px; }
