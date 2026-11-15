@@ -20,7 +20,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
-  <link rel="stylesheet" href="/css/site.css?v=25">
+  <link rel="stylesheet" href="/css/site.css?v=26">
 
 
 </head>
@@ -52,7 +52,9 @@
 
     <section class="center-page lost">
       <div class="lost-inner">
-        <div class="lost-code" aria-hidden="true" data-reveal="fade"><span>4</span><span class="lost-orb"></span><span>4</span></div>
+        <span class="eyebrow lost-eyebrow" data-reveal="fade">Error 404</span>
+        <div class="lost-code" aria-hidden="true" data-reveal="fade">404</div>
+        <p class="lost-path mono" data-reveal="fade" style="--delay:120ms"><span class="lost-dot"></span><span id="lost-path">/this-page</span></p>
         <h1 data-split>Wrong <span class="grad-text">turn.</span></h1>
         <p data-reveal style="--delay:250ms">This page doesn't exist, or it moved. Head back home, or have a look at my work while you're here.</p>
         <div class="row" data-reveal style="--delay:380ms">
@@ -89,6 +91,14 @@
       </div>
     </div>
   </footer>
+  <script>
+    (function () {
+      var el = document.getElementById('lost-path');
+      if (!el) return;
+      var p = location.pathname + location.search;
+      if (p && p !== '/404' && p !== '/404.html') el.textContent = p.length > 48 ? p.slice(0, 47) + '…' : p;
+    })();
+  </script>
   <script src="/js/core.js?v=5" defer></script>
 
 </body>
